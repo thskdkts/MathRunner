@@ -5,171 +5,52 @@ using System;
 
 public class QuestionPicker
 {
-    public List<Question> Questions;
-
-    public QuestionPicker()
-    {
-        Questions = new List<Question>
-        {
-            new Question
-            {
-                id = 1,
-                number1 = 10,
-                number2 = 5,
-                op = "+",
-                answer1 = 15,
-                answer2 = 14,
-                answer3 = 16
-            },
-            new Question
-            {
-                id = 2,
-                number1 = 9,
-                number2 = 4,
-                op = "-",
-                answer1 = 3,
-                answer2 = 6,
-                answer3 = 5
-            },
-            new Question
-            {
-                id = 3,
-                number1 = 6,
-                number2 = 2,
-                op = "*",
-                answer1 = 10,
-                answer2 = 14,
-                answer3 = 12
-            },
-            new Question
-            {
-                id = 4,
-                number1 = 10,
-                number2 = 5,
-                op = "/",
-                answer1 = 3,
-                answer2 = 2,
-                answer3 = 4
-            },
-             new Question
-            {
-                id = 5,
-                number1 = 10,
-                number2 = 5,
-                op = "/",
-                answer1 = 3,
-                answer2 = 2,
-                answer3 = 4
-            },
-              new Question
-            {
-                id = 6,
-                number1 = 10,
-                number2 = 5,
-                op = "/",
-                answer1 = 3,
-                answer2 = 2,
-                answer3 = 4
-            },
-               new Question
-            {
-                id = 7,
-                number1 = 20,
-                number2 = 5,
-                op = "/",
-                answer1 = 3,
-                answer2 = 2,
-                answer3 = 4
-            },
-                new Question
-            {
-                id = 8,
-                number1 = 30,
-                number2 = 5,
-                op = "/",
-                answer1 = 3,
-                answer2 = 2,
-                answer3 = 6
-            },
-                 new Question
-            {
-                id = 9,
-                number1 = 50,
-                number2 = 5,
-                op = "/",
-                answer1 = 3,
-                answer2 = 10,
-                answer3 = 4
-            },
-                  new Question
-            {
-                id = 10,
-                number1 = 7,
-                number2 = 7,
-                op = "/",
-                answer1 = 3,
-                answer2 = 1,
-                answer3 = 4
-            },
-                   new Question
-            {
-                id = 11,
-                number1 = 42,
-                number2 = 7,
-                op = "/",
-                answer1 = 3,
-                answer2 = 2,
-                answer3 = 6
-            },
-                    new Question
-            {
-                id = 12,
-                number1 = 100,
-                number2 = 20,
-                op = "/",
-                answer1 = 5,
-                answer2 = 2,
-                answer3 = 4
-            },
-                     new Question
-            {
-                id = 13,
-                number1 = 81,
-                number2 = 9,
-                op = "/",
-                answer1 = 3,
-                answer2 = 9,
-                answer3 = 4
-            },
-                      new Question
-            {
-                id = 14,
-                number1 = 25,
-                number2 = 5,
-                op = "/",
-                answer1 = 5,
-                answer2 = 2,
-                answer3 = 4
-            },
-                       new Question
-            {
-                id = 15,
-                number1 = 100,
-                number2 = 2,
-                op = "/",
-                answer1 = 50,
-                answer2 = 60,
-                answer3 = 40
-            },
-
-
-        };
-
-    }
-
     public Question GetRandomQuestion()
     {
-        return Questions[UnityEngine.Random.Range(0, Questions.Count)];
+        List<String> Operators = new List<String> { "*", "/" };
+        Question q = new Question { 
+                                    number1 = UnityEngine.Random.Range(1, 50), 
+                                    number2 = UnityEngine.Random.Range(1, 10), 
+                                    op = Operators[UnityEngine.Random.Range(0, Operators.Count)] 
+                                  };
+
+        if (q.op == "/")
+        {
+            // number2 must always be less or equal than number 1
+            // The division between number1 and number 2 must give mod 0
+            while(q.number2 > q.number1 || q.number1 % q.number2 != 0)
+                q.number2 = UnityEngine.Random.Range(1, 10);
+        }
+
+        // Calculate the result using the randomly picked operator
+        int result;
+        if (q.op == "*") 
+            result = q.number1 * q.number2;
+        else 
+            result = q.number1 / q.number2;
+
+        // Place correct answer into random order
+        int answerPosition = UnityEngine.Random.Range(1, 3);
+        if (answerPosition == 1) 
+        {
+            q.answer1 = result;
+            q.answer2 = result + 10;
+            q.answer3 = result - 3;
+        } 
+        else if (answerPosition == 2) 
+        {
+            q.answer1 = result + 10;
+            q.answer2 = result;
+            q.answer3 = result - 3;
+        }
+        else 
+        {
+            q.answer1 = result - 3;
+            q.answer2 = result + 10;
+            q.answer3 = result;
+        }
+
+        return q;
     }
 }
 
@@ -177,9 +58,6 @@ public class QuestionPicker
 [Serializable]
 public class Question
 {
-    // Put some id
-    public int id;
-
     // 5 + 10 = ?
     public int number1;
     public string op;

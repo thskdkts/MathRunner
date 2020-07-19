@@ -316,20 +316,11 @@ public class GameState : AState
         int result;
         switch (question.op)
         {
-            case "+":
-                result = question.number1 + question.number2;
-                break;
-            case "-":
-                result = question.number1 - question.number2;
-                break;
             case "*":
                 result = question.number1 * question.number2;
                 break;
             case "/":
                 result = question.number1 / question.number2;
-                break;
-            case "%":
-                result = question.number1 % question.number2;
                 break;
             default:
                 result = 0;
